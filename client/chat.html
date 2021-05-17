@@ -7,15 +7,20 @@
     <title>Document</title>
   </head>
   <body>
-    <button type="button" id="btn">断开连接按钮</button>
+    <input type="text" id="msg" />
+    <button type="button" id="btn">发送按钮</button>
     <script>
+      // 声明元素
+      var btn = document.getElementById("btn");
+      var input = document.getElementById("msg");
+
       // 创建连接
       var ws = new WebSocket("ws://127.0.0.1:3000");
 
       //
       ws.onopen = function () {
         console.log("open:" + ws.readyState); // 1
-        ws.send("Hello from client!");
+        // ws.send("Hello from client!");
       };
 
       /**
@@ -35,16 +40,24 @@
       };
 
       // 客户端主动断开连接
-      var btn = document.getElementById("btn");
-      btn.addEventListener("click", function () {
-        ws.close();
-      });
+
+      // btn.addEventListener("click", function () {
+      //   ws.close();
+      // });
 
       // 当连接失败是 触发error事件
       ws.error = function () {
         console.log("error:" + ws.readyState); // 3
         console.log("webSocket连接失败");
       };
+
+      // 发送消息
+      btn.addEventListener("click", function () {
+        var inputValue = input.value;
+        ws.send(inputValue);
+
+        input.value = "";
+      });
     </script>
   </body>
 </html>
